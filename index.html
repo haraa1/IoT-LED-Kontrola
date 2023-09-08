@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>LED Control</title>
+    <!-- Include Firebase SDK script tags here -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-app.js";
+      import {
+        getDatabase,
+        ref,
+        set,
+      } from "https://www.gstatic.com/firebasejs/9.0.2/firebase-database.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyDAet9WAV2hYm7aur09PhI544ggscCrkjs",
+        authDomain: "iot-hara.firebaseapp.com",
+        databaseURL:
+          "https://iot-hara-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "iot-hara",
+        storageBucket: "iot-hara.appspot.com",
+        messagingSenderId: "207789890958",
+        appId: "1:207789890958:web:2899077c16cc7c448018df",
+        measurementId: "G-53CV5EQ1R4",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+
+      toggleLED1.addEventListener("change", function () {
+        toggleLED1.checked
+          ? updateFirebase("LED1STATUS", "ON")
+          : updateFirebase("LED1STATUS", "OFF");
+      });
+
+      toggleLED2.addEventListener("change", function () {
+        toggleLED2.checked
+          ? updateFirebase("LED2STATUS", "ON")
+          : updateFirebase("LED2STATUS", "OFF");
+      });
+
+      function updateFirebase(node, value) {
+        set(ref(database, node), value);
+      }
+    </script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+      }
+      h1 {
+        margin-top: 1rem;
+      }
+
+      .toggle-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 30px;
+      }
+
+      .toggle-switch input {
+        display: none;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 30px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+
+      /* Change background color when the checkbox is checked */
+      .toggle-switch input:checked + .slider {
+        background-color: #e70c29;
+      }
+
+      /* Move the slider to the right when the checkbox is checked */
+      .toggle-switch input:checked + .slider:before {
+        transform: translateX(26px);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>LED Kontrola</h1>
+    <div class="toggle-container">
+      <div class="toggle-item">
+        <p>LED 1</p>
+        <label class="toggle-switch">
+          <input type="checkbox" id="toggleLED1" />
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="toggle-item">
+        <p>LED 2</p>
+        <label class="toggle-switch">
+          <input type="checkbox" id="toggleLED2" />
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+  </body>
+</html>
